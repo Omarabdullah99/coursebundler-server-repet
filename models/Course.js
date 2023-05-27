@@ -47,10 +47,7 @@ const schema= new mongoose.Schema({
           required: true,
         },
       },
-      views: {
-        type: Number,
-        default: 0,
-      },
+      
       numOfVideos: {
         type: Number,
         default: 0,
