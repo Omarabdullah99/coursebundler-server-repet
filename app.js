@@ -7,6 +7,14 @@ config({
 }) //confign.env te port 4000, connection er jonno
 const app=express()
 
+//using middleware
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 //router setup
 import course from './routes/CourseRoute.js' //note: .js dewa lagbey na hole error dibe
 import users from './routes/UserRoute.js'
