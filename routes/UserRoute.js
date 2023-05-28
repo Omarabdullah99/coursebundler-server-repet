@@ -1,5 +1,5 @@
 import express from 'express'
-import { getMyProfile, login, logout, register } from '../controllers/userController.js'
+import { chnagePassword, getMyProfile, login, logout, register, updateProfile } from '../controllers/userController.js'
 import { isAuthenticated } from '../middlewares/auth.js'
 
 const router= express.Router()
@@ -15,5 +15,10 @@ router.route("/logout").post(logout)
 //get my profile, like middleware
 router.route("/getmyprofile").get(isAuthenticated,getMyProfile)
 
+//changePassword
+router.route("/changepassword").put(isAuthenticated,chnagePassword)
+
+//update profile
+router.route("/updateprofile").put(isAuthenticated,updateProfile)
 
 export default router
