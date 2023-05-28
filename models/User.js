@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import jwt from 'jsonwebtoken'
+import validator from 'validator'
 
 //user schema create
 const schema= new mongoose.Schema({
@@ -59,6 +61,13 @@ const schema= new mongoose.Schema({
       resetPasswordExpire: String,
 
 })
+
+//jwt token create, ei function er connection utils-> sendToken.js e 
+schema.methods.getJWTToken= function(){
+  return jwt.sign({_id: this._id},process.env.JWT_SECRET,{
+    expiresIn:"15d"
+  })
+}
 
 //user model create
 export const User= mongoose.model("User", schema)

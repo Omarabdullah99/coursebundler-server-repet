@@ -15,6 +15,8 @@ export const getAllCourses=catchAsyncError(async(req,res,next)=>{
     }
  })
 
+ //create course er function
+
  export const createCourses=catchAsyncError(async(req,res,next)=>{
 
     const {title,description,category,createdBy}=req.body
