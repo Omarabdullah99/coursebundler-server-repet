@@ -34,12 +34,12 @@ import { sendToken } from "../utils/sendToken.js";
     const {email,password}=req.body;
     
     if( !email || !password )
-    return next(new ErrorHandler("please enter all register field",400));
+    return next(new ErrorHandler("please enter all login field",400));
 
     const user=await User.findOne({email}).select("+password")
     if(!user) return next(new ErrorHandler("User dosen't Exist", 401))
 
-    const isMatch=await user.comparePassword(password)
+    const isMatch=await user.comparePassword(password) //comparePassword function modal->User e pabo
     if(!isMatch) return next(new ErrorHandler("Incorrect Email or Password",401))
 
   
@@ -59,6 +59,16 @@ import { sendToken } from "../utils/sendToken.js";
     }).json({
         success:true,
         message:"Logout successfully"
+
+    })
+})
+
+//get my profile, like middleware
+export const getMyProfile=catchAsyncError(async(req,res,next)=>{
+    const user=await User.findById(req.user._id) //ei line buji ni
+    res.status(200).json({
+        success:true,
+       user,
 
     })
 })

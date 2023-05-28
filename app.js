@@ -1,6 +1,7 @@
 import express from "express"
 import { config } from "dotenv"
 import ErrorMiddleware from "./middlewares/Error.js"
+import cookieParser from "cookie-parser" //middleware er auth.js e const {token}=req.cookies jonno use
 
 config({
     path:"./config/config.env"
@@ -14,6 +15,8 @@ app.use(
     extended: true,
   })
 );
+
+app.use(cookieParser()) //middleware er auth.js e const {token}=req.cookies jonno use
 
 //router setup
 import course from './routes/CourseRoute.js' //note: .js dewa lagbey na hole error dibe

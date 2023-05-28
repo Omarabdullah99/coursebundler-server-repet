@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import jwt from 'jsonwebtoken'
 import validator from 'validator'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt' //pasword hass er jonno install
 
 //user schema create
 const schema= new mongoose.Schema({
