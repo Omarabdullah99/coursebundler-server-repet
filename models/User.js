@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import jwt from 'jsonwebtoken'
 import validator from 'validator'
 import bcrypt from 'bcrypt' //pasword hass er jonno install
+import crypto from 'crypto'
 
 //user schema create
 const schema= new mongoose.Schema({
@@ -84,6 +85,17 @@ schema.methods.comparePassword=async function(password){
   return await bcrypt.compare(password, this.password)
 
 }
+
+// getResetToken eita controllers=> userController.js e forgetpassword function e ache
+schema.methods.getResetToken=function(){
+  const resetToken=crypto.randomBytes(20).toString("hex")
+  this.resetPasswordToken=crypto.createHash("sha256").update(resetToken).digest("hex")
+  this.resetPasswordExpire=Date.now()+15 * 60 * 1000; //15 minute expire date
+
+  return resetToken;
+
+}
+// console.log(crypto.randomBytes(20).toString("hex"))
 
 //user model create
 export const User= mongoose.model("User", schema)
