@@ -1,6 +1,6 @@
 import express from 'express'
-import { addToPlaylist, chnagePassword, forgetPassword, getMyProfile, login, logout, register, removeFromPlaylist, resetPassword, updateProfile, updateprofilepicture } from '../controllers/userController.js'
-import { isAuthenticated } from '../middlewares/auth.js'
+import { addToPlaylist, chnagePassword, deleteMyProfile, deleteUser, forgetPassword, getAllUsers, getMyProfile, login, logout, register, removeFromPlaylist, resetPassword, updateProfile, updateUserRole, updateprofilepicture } from '../controllers/userController.js'
+import { authorizedAdmin, isAuthenticated } from '../middlewares/auth.js'
 import singleUpload from '../middlewares/multer.js'
 
 
@@ -37,4 +37,14 @@ router.route("/addtoplaylist").post(isAuthenticated, addToPlaylist)
 //removeFromPlayList
 router.route("/removefromplaylist").delete(isAuthenticated,removeFromPlaylist)
 
+//admin router get all users
+router.route("/admin/users").get(isAuthenticated,authorizedAdmin,getAllUsers)
+//admin update user role
+router.route("/admin/user/:id").put(isAuthenticated,authorizedAdmin,updateUserRole)
+
+//admin delete user
+router.route("/admin/user/:id").delete(isAuthenticated,authorizedAdmin,deleteUser)
+
+//delete my profile
+router.route("/me").delete(isAuthenticated,deleteMyProfile)
 export default router
