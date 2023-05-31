@@ -5,6 +5,8 @@ import {catchAsyncError} from '../middlewares/catchAsyncError.js'
 import { sendToken } from "../utils/sendToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import crypto from 'crypto'
+import getDataUri from "../utils/dataUri.js";
+import cloudinary from 'cloudinary'
 
  export const register =catchAsyncError(async(req,res,next)=>{
     const {name,email,password}=req.body;
@@ -16,14 +18,17 @@ import crypto from 'crypto'
     if(user) return next(new ErrorHandler("User Already Exist", 409))
 
     //upload file cloudinary
+    const file=req.file;
+    const fileUri= getDataUri(file)
+    const mycloud= await cloudinary.v2.uploader.upload(fileUri.content)
 
     user= await User.create({
         name,
         email,
         password,
         avatar:{
-            public_id:"tempid",
-            url:"tempurl"
+            public_id:mycloud.public_id,
+            url:mycloud.secure_url,
         }
     })
 
@@ -109,6 +114,26 @@ export const updateProfile=catchAsyncError(async (req,res,next)=>{
         success:true,
        message:"Profile updated successfully"
 
+    })
+})
+
+//update profile picture
+export const updateprofilepicture=catchAsyncError(async(req,res,next)=>{
+    //cloudinary:TODO
+    const file=req.file;
+    const user=await User.findById(req.user._id)
+    const fileUri= getDataUri(file)
+    const mycloud= await cloudinary.v2.uploader.upload(fileUri.content)
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+    user.avatar={
+        public_id:mycloud.public_id,
+        url:mycloud.secure_url,
+    };
+    await user.save()
+
+    res.status(200).json({
+        success:true,
+        message:"Profile Picture Update Successfully"
     })
 })
 
