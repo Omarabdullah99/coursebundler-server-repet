@@ -21,9 +21,12 @@ app.use(cookieParser()) //middleware er auth.js e const {token}=req.cookies jonn
 //router setup
 import course from './routes/CourseRoute.js' //note: .js dewa lagbey na hole error dibe
 import users from './routes/UserRoute.js'
+import others from './routes/otherRoute.js'
+
 
 app.use("/api/v1",course)
 app.use("/api/v1", users)
+app.use("/api/v1", others)
 
 export default app
 
